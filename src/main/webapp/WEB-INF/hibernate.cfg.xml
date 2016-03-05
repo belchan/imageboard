@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="org.belchan.model.Ad"/>
+        <mapping class="org.belchan.model.Announcement"/>
+        <mapping class="org.belchan.model.Banlist"/>
+        <mapping class="org.belchan.model.Bannedhashe"/>
+        <mapping class="org.belchan.model.Blotter"/>
+        <mapping class="org.belchan.model.Board"/>
+        <mapping class="org.belchan.model.Embed"/>
+        <mapping class="org.belchan.model.Event"/>
+        <mapping class="org.belchan.model.Filetype"/>
+        <mapping class="org.belchan.model.Front"/>
+        <mapping class="org.belchan.model.Location"/>
+        <mapping class="org.belchan.model.Loginattempt"/>
+        <mapping class="org.belchan.model.Modlog"/>
+        <mapping class="org.belchan.model.ModuleSetting"/>
+        <mapping class="org.belchan.model.Post"/>
+        <mapping class="org.belchan.model.Report"/>
+        <mapping class="org.belchan.model.Section"/>
+        <mapping class="org.belchan.model.Staff"/>
+        <mapping class="org.belchan.model.Watchedthread"/>
+        <mapping class="org.belchan.model.Wordfilter"/>
+    </session-factory>
+</hibernate-configuration>
