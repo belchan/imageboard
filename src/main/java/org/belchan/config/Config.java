@@ -7,19 +7,24 @@ package org.belchan.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.util.Properties;
-import javax.sql.DataSource;
 import org.belchan.ImageBoardApplication;
 import org.belchan.service.email.EmailAccount;
+import org.belchan.ui.InMemoryMessageRepository;
+import org.belchan.ui.Message;
+import org.belchan.ui.MessageRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -89,4 +94,21 @@ public class Config implements TransactionManagementConfigurer {
         emailAccount.setSmtpPort(this.emailPort);
         return emailAccount;
     }
+
+    @Bean
+    public MessageRepository messageRepository() {
+        return new InMemoryMessageRepository();
+    }
+
+    @Bean
+    public Converter<String, Message> messageConverter() {
+        return new Converter<String, Message>() {
+            @Override
+            public Message convert(String id) {
+                return messageRepository().findMessage(Long.valueOf(id));
+            }
+        };
+    }
+
+
 }
