@@ -8,6 +8,37 @@ body {
     background: #303F9F;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus{
@@ -16,22 +47,29 @@ body {
 }
 
 .navbar-inverse .navbar-nav > .open > a,
-.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:hover,/**50**/
 .navbar-inverse .navbar-nav > .open > a:focus{
     background: #1A237E;
     color: #fff;
 }
-
+/*55*/
 .navbar-inverse .navbar-nav > .open > .dropdown-menu> li> a,
 .navbar-inverse .navbar-nav > .open > .dropdown-menu> {
     background-color: #303F9F;
     color: #eeeeee;
-}/*59*/
-
-
+}
+/*61*/
+.navbar-inverse .navbar-nav > .open > .dropdown-menu> li>a:hover {
+    color: #000000;
+}
+/*65*/
 .tab-content {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     padding: 10px;
+}
+/*72*/
+.affix {
+    top:100px;
 }
