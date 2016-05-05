@@ -32,7 +32,12 @@ import java.util.Properties;
         basePackageClasses = {ImageBoardApplication.class}
 )
 public class Config implements TransactionManagementConfigurer {
-    public static final String PackagesToScan = "org.belchan";
+
+    public static final String PackagesToScan = "null";
+    static {
+
+    }
+
     @Value("${dataSource.driverClassName}")
     private String driver;
     @Value("${dataSource.url}")
@@ -76,7 +81,7 @@ public class Config implements TransactionManagementConfigurer {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(this.configureDataSource());
-        localSessionFactoryBean.setPackagesToScan(new String[]{"org.belchan"});
+        localSessionFactoryBean.setPackagesToScan(PackagesToScan);
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", this.dialect);
         hibernateProperties.setProperty("hibernate.show_sql", Boolean.TRUE.toString());

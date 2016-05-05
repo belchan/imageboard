@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import java.util.List;
 
@@ -22,27 +22,6 @@ public class BoardController {
 
     @Autowired
     BoardService boardService;
-
-    public BoardController() {
-    }
-
-//    @RequestMapping(
-//            value = {"board"},
-//            method = {RequestMethod.GET}
-//    )
-//    @ResponseBody
-//    public List<Board> getBoards() {
-//        return this.boardService.getBoards();
-//    }
-
-    @RequestMapping(
-            value = {"board/{id}"},
-            method = {RequestMethod.GET}
-    )
-    @ResponseBody
-    public Board getBoard(@PathVariable("id") int id) {
-        return this.boardService.getBoard(id);
-    }
 
     @RequestMapping(
             value = {"{boardName}/res/{numThread}.html"},
@@ -63,30 +42,66 @@ public class BoardController {
 
         return new ModelAndView("thread-view",model.asMap());
     }
-//
-//    @RequestMapping(
-//            value = {"{boardName}"},
-//            method = {RequestMethod.GET}
-//    )
-    public ModelAndView getBoard(Model model, @PathVariable("boardName") String boardName) {
-        if ((boardName == null) || (boardName.isEmpty()) || boardName.equalsIgnoreCase("index")) {
-            List b = this.boardService.getBoards();
-            model.addAttribute("boards", b);
-            return new ModelAndView("board-index",model.asMap());
-        }
-        Board b = this.boardService.getBoard(boardName);
-        model.addAttribute("board", b);
-        List bs = this.boardService.getBoards();
-        model.addAttribute("boards", bs);
-        List ps = this.boardService.getPagePosts(b, 0);
-        model.addAttribute("posts", ps);
 
-
-        for (Object p1 : ps) {
-            Post p = (Post) p1;
-            this.log.info(p.toString());
-        }
-
-        return new ModelAndView("board-view",model.asMap());
+    @RequestMapping(
+            value = {"{boardName}"},
+            method = {RequestMethod.GET}
+    )
+    public View getBoard(Model model, @PathVariable("boardName") String boardName) {
+        Board board = boardService.getBoard(boardName);
+        return /*(board != null)?new Model():*/new ModelAndView(boardName).getView();
     }
 }
+/*
+
+
+
+
+
+
+
+
+
+    @RequestMapping(
+            value = {"board"},
+            method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public List<Board> getBoards() {
+        return this.boardService.getBoards();
+    }
+
+    @RequestMapping(
+            value = {"board/{id}"},
+            method = {RequestMethod.GET}
+    )
+
+    @ResponseBody
+    public Board getBoard(@PathVariable("id") int id) {
+        return this.boardService.getBoard(id);
+    }
+
+    */
+
+//
+//
+//
+//        if ((boardName == null) || (boardName.isEmpty()) || boardName.equalsIgnoreCase("index")) {
+//            List b = this.boardService.getBoards();
+//            model.addAttribute("boards", b);
+//            return new ModelAndView("board-index",model.asMap());
+//        }
+//        Board b = this.boardService.getBoard(boardName);
+//        model.addAttribute("board", b);
+//        List bs = this.boardService.getBoards();
+//        model.addAttribute("boards", bs);
+//        List ps = this.boardService.getPagePosts(b, 0);
+//        model.addAttribute("posts", ps);
+//
+//
+//        for (Object p1 : ps) {
+//            Post p = (Post) p1;
+//            this.log.info(p.toString());
+//        }
+//
+//        return new ModelAndView("board-view");

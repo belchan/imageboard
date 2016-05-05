@@ -1,32 +1,28 @@
 
 package org.belchan.service.email;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.Authenticator;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import org.belchan.service.email.EmailAccount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
 public class SendEmail extends Thread {
     private EmailAccount emailAccount;
-    protected String AUTH;
-    protected String emailTo;
+    private String AUTH;
+    private String emailTo;
     protected String emailCc;
     protected String subject;
     protected String messageBody;
