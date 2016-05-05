@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import java.util.List;
 
@@ -47,9 +46,9 @@ public class BoardController {
             value = {"{boardName}"},
             method = {RequestMethod.GET}
     )
-    public View getBoard(Model model, @PathVariable("boardName") String boardName) {
+    public String getBoard(Model model, @PathVariable("boardName") String boardName) {
         Board board = boardService.getBoard(boardName);
-        return /*(board != null)?new Model():*/new ModelAndView(boardName).getView();
+        return (board != null)?board.getDesc():"BELCHAN : Not FOUND";
     }
 }
 /*
