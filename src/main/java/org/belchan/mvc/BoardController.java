@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -48,10 +50,23 @@ public class BoardController {
             value = {"archive", "b", "bb", "bc", "bo", "by", "dt", "files", "fm", "int", "mu", "news", "t", "v", "vg", "wp",},
             method = {RequestMethod.GET}
     )
-    public @ResponseBody String getBoard(Model model, HttpServletRequest request) {
+    public @ResponseBody String getBoard(Model model, HttpServletRequest request, HttpServletResponse response) {
         String boardName = request.getServletPath().split("/")[1];
         Board board = boardService.getBoard(boardName);
-        return (board != null)?board.getDesc():"BELCHAN : Not FOUND " + boardName;
+        if (board != null)
+        {
+            setStatus(response,boardName,"0","0");
+            return "board.html";
+        } else {
+            return "404.html";
+        }
+
+    }
+
+    private void setStatus(HttpServletResponse response, String board, String thread, String page) {
+        response.addCookie(new Cookie("board",board));
+        response.addCookie(new Cookie("thread",thread));
+        response.addCookie(new Cookie("page",page));
     }
 
 
