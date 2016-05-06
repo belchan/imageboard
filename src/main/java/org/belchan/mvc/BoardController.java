@@ -11,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -43,12 +45,24 @@ public class BoardController {
     }
 
     @RequestMapping(
-            value = {"{boardName}"},
+            value = {"archive", "b", "bb", "bc", "bo", "by", "dt", "files", "fm", "int", "mu", "news", "t", "v", "vg", "wp",},
             method = {RequestMethod.GET}
     )
-    public String getBoard(Model model, @PathVariable("boardName") String boardName) {
+    public @ResponseBody String getBoard(Model model, HttpServletRequest request) {
+        String boardName = request.getServletPath().split("/")[1];
         Board board = boardService.getBoard(boardName);
-        return (board != null)?board.getDesc():"BELCHAN : Not FOUND";
+        return (board != null)?board.getDesc():"BELCHAN : Not FOUND " + boardName;
+    }
+
+
+
+    @RequestMapping(
+            value = {"boards"},
+            method = {RequestMethod.GET}
+    )
+    @ResponseBody
+    public List<Board> getBoards() {
+        return this.boardService.getBoards();
     }
 }
 /*
@@ -58,17 +72,6 @@ public class BoardController {
 
 
 
-
-
-
-    @RequestMapping(
-            value = {"board"},
-            method = {RequestMethod.GET}
-    )
-    @ResponseBody
-    public List<Board> getBoards() {
-        return this.boardService.getBoards();
-    }
 
     @RequestMapping(
             value = {"board/{id}"},

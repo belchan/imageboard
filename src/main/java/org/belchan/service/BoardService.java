@@ -31,7 +31,7 @@ public class BoardService {
     }
 
     public Board getBoard(String boardName) {
-        return this.boardDAO.get(boardName);
+        return boardDAO.get(boardName);
     }
 
     public List<Post> getPagePosts(Board b, int page) {
