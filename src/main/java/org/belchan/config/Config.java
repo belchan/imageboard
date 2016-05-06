@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.sql.DataSource;
+import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
@@ -33,19 +34,16 @@ import java.util.Properties;
 )
 public class Config implements TransactionManagementConfigurer {
 
-    public static final String PackagesToScan = "null";
-    static {
+    private static final String PACKAGES_TO_SCAN = "org.belchan";
 
-    }
-
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
     @Value("${dataSource.driverClassName}")
     private String driver;
-    @Value("${dataSource.url}")
-    private String url;
-    @Value("${dataSource.username}")
-    private String username;
-    @Value("${dataSource.password}")
-    private String password;
     @Value("${hibernate.dialect}")
     private String dialect;
     @Value("${hibernate.hbm2ddl.auto}")
@@ -66,9 +64,26 @@ public class Config implements TransactionManagementConfigurer {
     public DataSource configureDataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(this.driver);
-        config.setJdbcUrl(this.url);
-        config.setUsername(this.username);
-        config.setPassword(this.password);
+        String mysqlHostOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_HOST");
+        String mysqlPortOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_PORT");
+        String appNameOpenShift = System.getenv("$OPENSHIFT_APP_NAME");
+        String mysqlUsernameOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_USERNAME");
+        String mysqlPasswordOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_PASSWORD");
+
+        if (Objects.isNull(mysqlPasswordOpenShift)) {
+            //DEV
+            config.setJdbcUrl(this.url);
+            config.setUsername(this.username);
+            config.setPassword(this.password);
+        } else {
+            //PROD
+            //jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}
+            String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift;
+            config.setJdbcUrl(dataSourceMysqlUrlOpenShift);
+            config.setUsername(mysqlUsernameOpenShift);
+            config.setPassword(mysqlPasswordOpenShift);
+        }
+
         return new HikariDataSource(config);
     }
 
@@ -81,7 +96,7 @@ public class Config implements TransactionManagementConfigurer {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(this.configureDataSource());
-        localSessionFactoryBean.setPackagesToScan(PackagesToScan);
+        localSessionFactoryBean.setPackagesToScan(PACKAGES_TO_SCAN);
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", this.dialect);
         hibernateProperties.setProperty("hibernate.show_sql", Boolean.TRUE.toString());
