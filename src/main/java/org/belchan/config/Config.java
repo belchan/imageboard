@@ -83,7 +83,14 @@ public class Config implements TransactionManagementConfigurer {
             config.setUsername(mysqlUsernameOpenShift);
             config.setPassword(mysqlPasswordOpenShift);
         }
-
+        System.out.println("=====================BEGIN========================");
+        System.out.println("URL");
+        System.out.println(config.getJdbcUrl());
+        System.out.println("USER");
+        System.out.println(config.getUsername());
+        System.out.println("PASS");
+        System.out.println(config.getPassword());
+        System.out.println("=====================END========================");
         return new HikariDataSource(config);
     }
 
