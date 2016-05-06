@@ -64,11 +64,11 @@ public class Config implements TransactionManagementConfigurer {
     public DataSource configureDataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(this.driver);
-        String mysqlHostOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_HOST");
-        String mysqlPortOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_PORT");
-        String appNameOpenShift = System.getenv("$OPENSHIFT_APP_NAME");
-        String mysqlUsernameOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_USERNAME");
-        String mysqlPasswordOpenShift = System.getenv("$OPENSHIFT_MYSQL_DB_PASSWORD");
+        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
+        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
 
         if (Objects.isNull(mysqlPasswordOpenShift)) {
             //DEV
