@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
         for (var i = 0; i < arr.length; i++) {
             var s = "<a href=\"/";
             s += arr[i].name;
-            s += "/\" class=\"boardlink\">/";
+            s += "\" class=\"boardlink\">/";
             s += arr[i].name;
             s += "/ ";
             s += arr[i].desc;

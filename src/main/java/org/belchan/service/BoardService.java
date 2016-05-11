@@ -12,6 +12,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,7 +35,8 @@ public class BoardService {
         return boardDAO.get(boardName);
     }
 
-    public List<Post> getPagePosts(Board b, int page) {
+    public List<Post> getPagePosts(String boardName, int page) {
+        Board b = boardDAO.get(boardName);
         List<Post> posts = boardDAO.getFirstPosts(b, 10, page);
         Hibernate.initialize(posts);
         return posts;
@@ -45,5 +47,17 @@ public class BoardService {
         Post p = this.boardDAO.getHeadPost(b.getId(), numThread);
         l.add(0, p);
         return l;
+    }
+
+    public List<Post> getPosts(String boardName, String threadId) {
+        try {
+            Board board = boardDAO.get(boardName);
+            List<Post> posts = boardDAO.getPosts(board.getId(),Integer.valueOf(threadId));
+            return  posts;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ArrayList<Post>();
+        }
+
     }
 }

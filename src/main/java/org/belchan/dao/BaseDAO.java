@@ -89,8 +89,7 @@ public class BaseDAO<T> {
                 }
             }
 
-            List var9 = e.list();
-            return var9;
+            return e.list();
         } catch (Exception var8) {
             var8.printStackTrace();
             return new ArrayList();
