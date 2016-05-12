@@ -23,9 +23,11 @@ public class SinglePageController {
     )
     public String getBoard(HttpServletResponse response, @PathVariable("boardName") String boardName, @PathVariable("numThread") String numThread) {
         setStatus(response,boardName,numThread,"0");
-        return "thread.html";
+        return "/thread.html";
     }
 
+
+    //TODO rewrite it
     @RequestMapping(
             value = {"archive", "b", "bb", "bc", "bo", "by", "dt", "files", "fm", "int", "mu", "news", "t", "v", "vg", "wp",
                     "/archive/", "/b/", "/bb/", "/bc/", "/bo/", "/by/", "/dt/", "/files/", "/fm/", "/int/", "/mu/", "/news/",

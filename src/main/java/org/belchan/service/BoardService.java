@@ -51,8 +51,11 @@ public class BoardService {
 
     public List<Post> getPosts(String boardName, String threadId) {
         try {
+            Integer thread = Integer.valueOf(threadId);
             Board board = boardDAO.get(boardName);
-            List<Post> posts = boardDAO.getPosts(board.getId(),Integer.valueOf(threadId));
+            List<Post> posts = boardDAO.getPosts(board.getId(),thread);
+            Post mainPost = boardDAO.getEntity(Post.class,thread);
+            posts.add(0,mainPost);
             return  posts;
         } catch (Exception ex) {
             ex.printStackTrace();

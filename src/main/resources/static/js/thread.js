@@ -10,11 +10,7 @@ jQuery(document).ready(function ($) {
         var children = threadTemplateInstance.children();
 
 
-        var subj = "<a href=\"/" + board + "/res/";
-        subj += thread.id;
-        subj += ".html\" class=\"boardlink\">";
-        subj += "№ " + thread.id + " " +  thread.name;
-        subj += "</a>";
+        var subj = "№ " + thread.id + " " +  thread.name;
 
         var message = thread.message;
 
@@ -26,23 +22,22 @@ jQuery(document).ready(function ($) {
     }
 
     var request = $.ajax({
-        url: "threads",
+        url: "/posts",
         method: "GET",
         data: {
             boardName: board,
-            thread: thread,
+            threadId: thread,
             page: page
         },
         dataType: "json"
     });
 
     request.done(function( arr ) {
+        var title = document.getElementsByTagName("title")[0]
+        title.innerHTML = arr[0].name;
         for (var i = 0; i < arr.length; i++) {
             var s = extracted(arr[i]);
-            $("#body p").append(s)
-            // var html = $("#body p").html();
-            // html += s;
-            // $("#body p").html(html)
+            $("#body p").append(s);
         }
     });
 
