@@ -1,4 +1,8 @@
 jQuery(document).ready(function ($) {
+    var countImagesMinOne = 3;
+    var numImg = Math.round(Math.random()*(countImagesMinOne))+1;
+
+    $("#bg").css({"background-image": "url(\"/css/images/bg" + numImg + ".jpg\")"});
     $.get("boards", function (data) {
         var arr = data;
         for (var i = 0; i < arr.length; i++) {
