@@ -6,35 +6,75 @@
     <link rel="stylesheet" href="/css/belchan.css">
     <title>Title</title>
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Volt">
 </head>
 <body>
+<div class="container"  id="newPostBox">
+        <form role="form" class="form-group">
+            <div class="form-group">
+                <label for="name">Імя:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="subject">Тэма:</label>
+                <input type="text" class="form-control" id="subject" name="subject">
+            </div>
+            <div class="form-group">
+                <label for="message">Тэкст:</label>
+                <textarea class="form-control" rows="5" id="message" name="message"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pwd">Пароль:</label>
+                <input type="password" class="form-control" id="pwd" name="password">
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" name="checkbox" required>Я не буду посціць лухту</label>
+            </div>
+            <button type="button" class="btn btn-default" id="sendPost">Даслаць</button>
+        </form>
+    </div>
+</div>
 <div class="container marketing" id="mainDiv">
+
 </div>
 <div id="templates" class="templates">
     <div class="row featurette" id="postMain">
         <div class="col-md-7 col-md-push-5">
-            <h2 class="featurette-heading postTitle">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+            <h2 class="featurette-heading postTitle">Oh yeah, it's that good. <span
+                    class="text-muted">See for yourself.</span></h2>
+            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
+                semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
+                commodo.</p>
         </div>
         <div class="col-md-5 col-md-pull-7">
-            <img class="featurette-image img-responsive center-block" src="/css/images/loading.gif"  alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block" src="/css/images/loading.gif"
+                 alt="Generic placeholder image">
         </div>
         <hr class="featurette-divider">
     </div>
     <div class="row featurette" id="post">
         <div class="col-md-7 col-md-push-5">
-            <h4 class="featurette-heading postTitle">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h4>
-            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+            <h4 class="featurette-heading postTitle">Oh yeah, it's that good. <span
+                    class="text-muted">See for yourself.</span></h4>
+            <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod
+                semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus
+                commodo.</p>
         </div>
         <div class="col-md-2 col-md-pull-7">
-            <img class="featurette-image img-responsive center-block" src="/css/images/loading.gif" alt="Generic placeholder image">
+            <img class="featurette-image img-responsive center-block" src="/css/images/loading.gif"
+                 alt="Generic placeholder image">
         </div>
         <hr class="featurette-divider">
     </div>
 </div>
+
 <script src="/js/jquery-2.2.3.js"></script>
 <script src="/js/cookie.js"></script>
 <script src="/js/thread.js"></script>
+<script src="/js/post.js"></script>
 </body>
 </html>

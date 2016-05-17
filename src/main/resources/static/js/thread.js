@@ -52,6 +52,6 @@ jQuery(document).ready(function ($) {
     });
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( "Request failed: " + textStatus );
+       // alert( "Request failed: " + textStatus );
     });
 });
