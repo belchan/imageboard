@@ -5,12 +5,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class SinglePageController {
+public class SinglePageController extends BelchanAbstractController{
 
     @RequestMapping("/")
     public String main() {
@@ -38,11 +37,5 @@ public class SinglePageController {
         String boardName = request.getServletPath().split("/")[1];
         setStatus(response,boardName,"0","0");
         return "board.html";
-    }
-
-    private void setStatus(HttpServletResponse response, String board, String thread, String page) {
-        response.addCookie(new Cookie("board",board));
-        response.addCookie(new Cookie("thread",thread));
-        response.addCookie(new Cookie("page",page));
     }
 }

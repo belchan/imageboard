@@ -1,7 +1,11 @@
 package org.belchan.model;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -13,13 +17,6 @@ import javax.persistence.*;
 @NamedQuery(name="Post.findAll", query="SELECT p FROM Post p")
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static String COL_BOARD_ID = "boardid";
-	public static String COL_PARENT_ID = "parentid";
-	public static String COL_BUMPED = "bumped";
-	public static String COL_ID = "id";
-
-//	@EmbeddedId
-//	private PostPK id;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -28,10 +25,13 @@ public class Post implements Serializable {
 	private int boardid;
 
 
-	private int bumped;
+	//private LocalDateTime bumped;
+	@JsonIgnore
+	private Timestamp bumped;
 
 	@Column(name="deleted_timestamp")
-	private int deletedTimestamp;
+	@JsonIgnore
+	private Timestamp deletedTimestamp;
 
 	private String email;
 
@@ -92,7 +92,9 @@ public class Post implements Serializable {
 	@Column(name="thumb_w")
 	private int thumbW;
 
-	private int timestamp;
+	//private LocalDateTime timestamp;
+	@JsonIgnore
+	private Timestamp timestamp;
 
 	private String tripcode;
 
@@ -113,20 +115,20 @@ public class Post implements Serializable {
 		this.id = id;
 	}
 
-	public int getBumped() {
-		return this.bumped;
+	public LocalDateTime getBumped() {
+		return this.bumped.toLocalDateTime();
 	}
 
-	public void setBumped(int bumped) {
-		this.bumped = bumped;
+	public void setBumped(LocalDateTime bumped) {
+		this.bumped = Timestamp.valueOf(bumped);
 	}
 
-	public int getDeletedTimestamp() {
-		return this.deletedTimestamp;
+	public LocalDateTime getDeletedTimestamp() {
+		return this.deletedTimestamp.toLocalDateTime();
 	}
 
-	public void setDeletedTimestamp(int deletedTimestamp) {
-		this.deletedTimestamp = deletedTimestamp;
+	public void setDeletedTimestamp(LocalDateTime deletedTimestamp) {
+		this.deletedTimestamp = Timestamp.valueOf(deletedTimestamp);
 	}
 
 	public String getEmail() {
@@ -302,6 +304,9 @@ public class Post implements Serializable {
 	}
 
 	public void setTag(String tag) {
+		if (tag.length() > 20) {
+			tag = tag.substring(0,19);
+		}
 		this.tag = tag;
 	}
 
@@ -321,12 +326,12 @@ public class Post implements Serializable {
 		this.thumbW = thumbW;
 	}
 
-	public int getTimestamp() {
-		return this.timestamp;
+	public LocalDateTime getTimestamp() {
+		return this.timestamp.toLocalDateTime();
 	}
 
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = Timestamp.valueOf(timestamp);
 	}
 
 	public String getTripcode() {
@@ -385,8 +390,6 @@ public class Post implements Serializable {
 	public int hashCode() {
 		int result = getId();
 		result = 31 * result + getBoardid();
-		result = 31 * result + getBumped();
-		result = 31 * result + getDeletedTimestamp();
 		result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
 		result = 31 * result + (getFile() != null ? getFile().hashCode() : 0);
 		result = 31 * result + (getFileMd5() != null ? getFileMd5().hashCode() : 0);
@@ -411,7 +414,6 @@ public class Post implements Serializable {
 		result = 31 * result + (getTag() != null ? getTag().hashCode() : 0);
 		result = 31 * result + getThumbH();
 		result = 31 * result + getThumbW();
-		result = 31 * result + getTimestamp();
 		result = 31 * result + (getTripcode() != null ? getTripcode().hashCode() : 0);
 		return result;
 	}

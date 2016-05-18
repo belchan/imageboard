@@ -6,6 +6,7 @@
 package org.belchan.service;
 
 import org.belchan.dao.BoardDAO;
+import org.belchan.dao.PostDAO;
 import org.belchan.model.Board;
 import org.belchan.model.Post;
 import org.hibernate.Hibernate;
@@ -17,8 +18,12 @@ import java.util.List;
 
 @Service
 public class BoardService {
+
     @Autowired
     BoardDAO boardDAO;
+
+    @Autowired
+    PostDAO postDAO;
 
     public BoardService() {
     }
@@ -37,14 +42,14 @@ public class BoardService {
 
     public List<Post> getPagePosts(String boardName, int page) {
         Board b = boardDAO.get(boardName);
-        List<Post> posts = boardDAO.getFirstPosts(b, 10, page);
+        List<Post> posts = postDAO.getFirstPosts(b, 10, page);
         Hibernate.initialize(posts);
         return posts;
     }
 
     public List<Post> getThreadPosts(Board b, int numThread) {
-        List<Post> l = this.boardDAO.getPosts(b.getId(), numThread);
-        Post p = this.boardDAO.getHeadPost(b.getId(), numThread);
+        List<Post> l = this.postDAO.getPosts(b.getId(), numThread);
+        Post p = this.postDAO.getHeadPost(b.getId(), numThread);
         l.add(0, p);
         return l;
     }
@@ -53,7 +58,7 @@ public class BoardService {
         try {
             Integer thread = Integer.valueOf(threadId);
             Board board = boardDAO.get(boardName);
-            List<Post> posts = boardDAO.getPosts(board.getId(),thread);
+            List<Post> posts = postDAO.getPosts(board.getId(),thread);
             Post mainPost = boardDAO.getEntity(Post.class,thread);
             posts.add(0,mainPost);
             return  posts;
