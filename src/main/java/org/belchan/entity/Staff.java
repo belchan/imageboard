@@ -1,4 +1,6 @@
-package org.belchan.model;
+package org.belchan.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -18,15 +20,19 @@ public class Staff implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
+	@JsonIgnore
 	private int addedon;
 
 	@Lob
 	private String boards;
 
+	@JsonIgnore
 	private int lastactive;
 
+	@JsonIgnore
 	private String password;
 
+	@JsonIgnore
 	private String salt;
 
 	private byte type;

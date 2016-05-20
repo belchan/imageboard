@@ -5,33 +5,35 @@
 
 package org.belchan.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.belchan.ImageBoardApplication;
 import org.belchan.service.email.EmailAccount;
 import org.belchan.ui.InMemoryMessageRepository;
 import org.belchan.ui.Message;
 import org.belchan.ui.MessageRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-        basePackageClasses = {ImageBoardApplication.class}
-)
+@EnableJpaRepositories(basePackages = {
+        "org.belchan.repository"
+})
 public class Config implements TransactionManagementConfigurer {
 
     private static final String PACKAGES_TO_SCAN = "org.belchan";
@@ -59,40 +61,52 @@ public class Config implements TransactionManagementConfigurer {
 
     public Config() {
     }
+//
+//    @Bean
+//    public DataSource buildDataSource() {
+//        HikariConfig config = new HikariConfig();
+//        config.setDriverClassName(this.driver);
+//        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+//        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+//        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
+//        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+//        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+//
+//        if (Objects.isNull(mysqlPasswordOpenShift)) {
+//            //DEV
+//            config.setJdbcUrl(this.url);
+//            config.setUsername(this.username);
+//            config.setPassword(this.password);
+//        } else {
+//            //PROD
+//            //jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}
+//            String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift;
+//            config.setJdbcUrl(dataSourceMysqlUrlOpenShift);
+//            config.setUsername(mysqlUsernameOpenShift);
+//            config.setPassword(mysqlPasswordOpenShift);
+//        }
+//        System.out.println("=====================BEGIN========================");
+//        System.out.println("URL");
+//        System.out.println(config.getJdbcUrl());
+//        System.out.println("USER");
+//        System.out.println(config.getUsername());
+//        System.out.println("PASS");
+//        System.out.println(config.getPassword());
+//        System.out.println("=====================END========================");
+//        return new HikariDataSource(config);
+//    }
+
 
     @Bean
-    public DataSource configureDataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(this.driver);
-        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
-        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-
-        if (Objects.isNull(mysqlPasswordOpenShift)) {
-            //DEV
-            config.setJdbcUrl(this.url);
-            config.setUsername(this.username);
-            config.setPassword(this.password);
-        } else {
-            //PROD
-            //jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}
-            String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift;
-            config.setJdbcUrl(dataSourceMysqlUrlOpenShift);
-            config.setUsername(mysqlUsernameOpenShift);
-            config.setPassword(mysqlPasswordOpenShift);
-        }
-        System.out.println("=====================BEGIN========================");
-        System.out.println("URL");
-        System.out.println(config.getJdbcUrl());
-        System.out.println("USER");
-        System.out.println(config.getUsername());
-        System.out.println("PASS");
-        System.out.println(config.getPassword());
-        System.out.println("=====================END========================");
-        return new HikariDataSource(config);
+    public DataSource buildDataSource() {
+        DataSourceBuilder dsb = DataSourceBuilder.create();
+        dsb.driverClassName(driver);
+        dsb.url(url);
+        dsb.username(username);
+        dsb.password(password);
+        return dsb.build();
     }
+
 
     @Bean
     public PlatformTransactionManager annotationDrivenTransactionManager() {
@@ -102,7 +116,7 @@ public class Config implements TransactionManagementConfigurer {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-        localSessionFactoryBean.setDataSource(this.configureDataSource());
+        localSessionFactoryBean.setDataSource(this.buildDataSource());
         localSessionFactoryBean.setPackagesToScan(PACKAGES_TO_SCAN);
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", this.dialect);
@@ -135,6 +149,35 @@ public class Config implements TransactionManagementConfigurer {
                 return messageRepository().findMessage(Long.valueOf(id));
             }
         };
+    }
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.MYSQL);
+        vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setShowSql(false);
+
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("org.belchan");
+        factory.setDataSource(buildDataSource());
+        factory.afterPropertiesSet();
+
+        return factory.getObject();
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+
+        return transactionManager;
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
 

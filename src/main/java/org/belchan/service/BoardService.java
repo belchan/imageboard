@@ -7,8 +7,8 @@ package org.belchan.service;
 
 import org.belchan.dao.BoardDAO;
 import org.belchan.dao.PostDAO;
-import org.belchan.model.Board;
-import org.belchan.model.Post;
+import org.belchan.entity.Board;
+import org.belchan.entity.Post;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

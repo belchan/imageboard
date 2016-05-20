@@ -1,4 +1,4 @@
-package org.belchan.model;
+package org.belchan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

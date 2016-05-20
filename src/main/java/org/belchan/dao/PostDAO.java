@@ -1,7 +1,7 @@
 package org.belchan.dao;
 
-import org.belchan.model.Board;
-import org.belchan.model.Post;
+import org.belchan.entity.Board;
+import org.belchan.entity.Post;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PostDAO extends BaseDAO<Post> {
+public class PostDAO extends BaseDAODeprecated<Post> {
 
     public static String COL_BOARD_ID = "boardid";
     public static String COL_PARENT_ID = "parentid";

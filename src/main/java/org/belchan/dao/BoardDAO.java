@@ -5,17 +5,11 @@
 
 package org.belchan.dao;
 
-import org.belchan.model.Board;
-import org.belchan.model.Post;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import org.belchan.entity.Board;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class BoardDAO extends BaseDAO<Board> {
+public class BoardDAO extends BaseDAODeprecated<Board> {
 
     private static final String COL_NAME = "name";
 

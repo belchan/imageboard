@@ -1,7 +1,7 @@
 package org.belchan.mvc;
 
-import org.belchan.model.Board;
-import org.belchan.model.Post;
+import org.belchan.entity.Board;
+import org.belchan.entity.Post;
 import org.belchan.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

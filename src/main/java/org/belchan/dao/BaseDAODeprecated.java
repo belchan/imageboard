@@ -23,11 +23,11 @@ import java.util.List;
 
 @Service
 @Transactional
-public class BaseDAO<T> {
+public class BaseDAODeprecated<T> {
     SessionFactory sessionFactory;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public BaseDAO() {
+    public BaseDAODeprecated() {
     }
 
     @Autowired

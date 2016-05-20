@@ -1,11 +1,11 @@
 package org.belchan.service;
 
 import org.belchan.dao.BoardDAO;
-import org.belchan.dao.BoardRepository;
+import org.belchan.repository.BoardRepository;
 import org.belchan.dao.PostDAO;
-import org.belchan.dao.PostRepository;
-import org.belchan.model.Board;
-import org.belchan.model.Post;
+import org.belchan.repository.PostRepository;
+import org.belchan.entity.Board;
+import org.belchan.entity.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
