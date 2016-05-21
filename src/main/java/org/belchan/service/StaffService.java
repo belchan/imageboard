@@ -18,4 +18,8 @@ public class StaffService {
     public List<Staff> get() {
         return staffRepository.findAll();
     }
+
+    public List<Staff> findByUsername(String username) {
+        return staffRepository.findByUserName(username);
+    }
 }

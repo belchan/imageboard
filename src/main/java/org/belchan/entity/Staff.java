@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NamedQuery(name="Staff.findAll", query="SELECT s FROM Staff s")
 public class Staff implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public static String COL_USER_NAME = "username";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
