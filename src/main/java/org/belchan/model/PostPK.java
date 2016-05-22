@@ -1,17 +1,20 @@
 package org.belchan.model;
 
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class PostPK implements Serializable {
 
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    public static final long serialVersionUID = 20160525L;
 
-    private int boardid;
+    private Integer id;
+
+    private Integer boardid;
+
+    public PostPK() {
+    }
 
     public PostPK(int id, int boardid) {
         this.id = id;
@@ -38,18 +41,13 @@ public class PostPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         PostPK postPK = (PostPK) o;
-
-        if (id != postPK.id) return false;
-        return boardid == postPK.boardid;
-
+        return id == postPK.id &&
+                boardid == postPK.boardid;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + boardid;
-        return result;
+        return Objects.hash(id, boardid);
     }
 }

@@ -1,6 +1,7 @@
 package org.belchan.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private PostPK postPK;
 
@@ -328,12 +330,26 @@ public class Post implements Serializable {
 	}
 
 	public PostPK getPostPK() {
+		if (Objects.isNull(postPK)) {
+			postPK = new PostPK();
+		}
 		return postPK;
 	}
 
 	public void setPostPK(PostPK postPK) {
 		this.postPK = postPK;
 	}
+
+	@JsonProperty("id")
+	public int getId() {
+		return postPK.getId();
+	}
+
+	@JsonProperty("boardId")
+	public int getBoardid() {
+		return postPK.getBoardid();
+	}
+
 
 	@Override
 	public boolean equals(Object o) {

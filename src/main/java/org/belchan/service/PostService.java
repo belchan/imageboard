@@ -38,8 +38,8 @@ public class PostService {
 
         }
         Post post = createOrUpdatePost(name, email, subj, text, password, tag, ip, tripCode, board, thread);
-        int postId = post.getPostPK().getId();
         if (thread == 0) {
+            int postId = post.getPostPK().getId();
             return String.valueOf(postId);
         } else  {
             Post threadPost = postDAO.get(board.getId(),thread);
