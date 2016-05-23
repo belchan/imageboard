@@ -38,8 +38,8 @@ public class PostService {
 
         }
         Post post = createOrUpdatePost(name, email, subj, text, password, tag, ip, tripCode, board, thread);
-        int postId = post.getId();
         if (thread == 0) {
+            int postId = post.getPostPK().getId();
             return String.valueOf(postId);
         } else  {
             Post threadPost = postDAO.get(board.getId(),thread);
@@ -52,7 +52,7 @@ public class PostService {
 
     private Post createOrUpdatePost(String name, String email, String subj, String text, String password, String tag, String ip, String tripCode, Board board, int thread) {
         Post post = new Post();
-        post.setBoardid(board.getId());
+        post.getPostPK().setBoardid(board.getId());
         post.setBumped(LocalDateTime.now());
         post.setEmail(email);
         post.setFile("");

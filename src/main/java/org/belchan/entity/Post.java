@@ -1,11 +1,15 @@
 package org.belchan.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 /**
@@ -18,12 +22,9 @@ import java.time.LocalDateTime;
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-
-	private int boardid;
-
+	@JsonIgnore
+	@EmbeddedId
+	private PostPK postPK;
 
 	//private LocalDateTime bumped;
 	@JsonIgnore
@@ -99,20 +100,6 @@ public class Post implements Serializable {
 	private String tripcode;
 
 	public Post() {
-	}
-
-
-	public int getBoardid() {
-		return this.boardid;
-	}
-	public void setBoardid(int boardid) {
-		this.boardid = boardid;
-	}
-	public int getId() {
-		return this.id;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public LocalDateTime getBumped() {
@@ -342,115 +329,102 @@ public class Post implements Serializable {
 		this.tripcode = tripcode;
 	}
 
+	public PostPK getPostPK() {
+		if (Objects.isNull(postPK)) {
+			postPK = new PostPK();
+		}
+		return postPK;
+	}
+
+	public void setPostPK(PostPK postPK) {
+		this.postPK = postPK;
+	}
+
+	@JsonProperty("id")
+	public int getId() {
+		return postPK.getId();
+	}
+
+	@JsonProperty("boardId")
+	public int getBoardid() {
+		return postPK.getBoardid();
+	}
+
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Post)) return false;
-
+		if (o == null || getClass() != o.getClass()) return false;
 		Post post = (Post) o;
-
-		if (getId() != post.getId()) return false;
-		if (getBoardid() != post.getBoardid()) return false;
-		if (getBumped() != post.getBumped()) return false;
-		if (getDeletedTimestamp() != post.getDeletedTimestamp()) return false;
-		if (getFileSize() != post.getFileSize()) return false;
-		if (getImageH() != post.getImageH()) return false;
-		if (getImageW() != post.getImageW()) return false;
-		if (getIsDeleted() != post.getIsDeleted()) return false;
-		if (getLocked() != post.getLocked()) return false;
-		if (getParentid() != post.getParentid()) return false;
-		if (getPosterauthority() != post.getPosterauthority()) return false;
-		if (getReviewed() != post.getReviewed()) return false;
-		if (getStickied() != post.getStickied()) return false;
-		if (getThumbH() != post.getThumbH()) return false;
-		if (getThumbW() != post.getThumbW()) return false;
-		if (getTimestamp() != post.getTimestamp()) return false;
-		if (getEmail() != null ? !getEmail().equals(post.getEmail()) : post.getEmail() != null) return false;
-		if (getFile() != null ? !getFile().equals(post.getFile()) : post.getFile() != null) return false;
-		if (getFileMd5() != null ? !getFileMd5().equals(post.getFileMd5()) : post.getFileMd5() != null) return false;
-		if (getFileOriginal() != null ? !getFileOriginal().equals(post.getFileOriginal()) : post.getFileOriginal() != null)
-			return false;
-		if (getFileSizeFormatted() != null ? !getFileSizeFormatted().equals(post.getFileSizeFormatted()) : post.getFileSizeFormatted() != null)
-			return false;
-		if (getFileType() != null ? !getFileType().equals(post.getFileType()) : post.getFileType() != null)
-			return false;
-		if (getIp() != null ? !getIp().equals(post.getIp()) : post.getIp() != null) return false;
-		if (getIpmd5() != null ? !getIpmd5().equals(post.getIpmd5()) : post.getIpmd5() != null) return false;
-		if (getMessage() != null ? !getMessage().equals(post.getMessage()) : post.getMessage() != null) return false;
-		if (getName() != null ? !getName().equals(post.getName()) : post.getName() != null) return false;
-		if (getPassword() != null ? !getPassword().equals(post.getPassword()) : post.getPassword() != null)
-			return false;
-		if (getSubject() != null ? !getSubject().equals(post.getSubject()) : post.getSubject() != null) return false;
-		if (getTag() != null ? !getTag().equals(post.getTag()) : post.getTag() != null) return false;
-		return !(getTripcode() != null ? !getTripcode().equals(post.getTripcode()) : post.getTripcode() != null);
-
+		return fileSize == post.fileSize &&
+				imageH == post.imageH &&
+				imageW == post.imageW &&
+				isDeleted == post.isDeleted &&
+				locked == post.locked &&
+				parentid == post.parentid &&
+				posterauthority == post.posterauthority &&
+				reviewed == post.reviewed &&
+				stickied == post.stickied &&
+				thumbH == post.thumbH &&
+				thumbW == post.thumbW &&
+				Objects.equals(postPK, post.postPK) &&
+				Objects.equals(bumped, post.bumped) &&
+				Objects.equals(deletedTimestamp, post.deletedTimestamp) &&
+				Objects.equals(email, post.email) &&
+				Objects.equals(file, post.file) &&
+				Objects.equals(fileMd5, post.fileMd5) &&
+				Objects.equals(fileOriginal, post.fileOriginal) &&
+				Objects.equals(fileSizeFormatted, post.fileSizeFormatted) &&
+				Objects.equals(fileType, post.fileType) &&
+				Objects.equals(ip, post.ip) &&
+				Objects.equals(ipmd5, post.ipmd5) &&
+				Objects.equals(message, post.message) &&
+				Objects.equals(name, post.name) &&
+				Objects.equals(password, post.password) &&
+				Objects.equals(subject, post.subject) &&
+				Objects.equals(tag, post.tag) &&
+				Objects.equals(timestamp, post.timestamp) &&
+				Objects.equals(tripcode, post.tripcode);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = getId();
-		result = 31 * result + getBoardid();
-		result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
-		result = 31 * result + (getFile() != null ? getFile().hashCode() : 0);
-		result = 31 * result + (getFileMd5() != null ? getFileMd5().hashCode() : 0);
-		result = 31 * result + (getFileOriginal() != null ? getFileOriginal().hashCode() : 0);
-		result = 31 * result + getFileSize();
-		result = 31 * result + (getFileSizeFormatted() != null ? getFileSizeFormatted().hashCode() : 0);
-		result = 31 * result + (getFileType() != null ? getFileType().hashCode() : 0);
-		result = 31 * result + (int) getImageH();
-		result = 31 * result + (int) getImageW();
-		result = 31 * result + (getIp() != null ? getIp().hashCode() : 0);
-		result = 31 * result + (getIpmd5() != null ? getIpmd5().hashCode() : 0);
-		result = 31 * result + (int) getIsDeleted();
-		result = 31 * result + (int) getLocked();
-		result = 31 * result + (getMessage() != null ? getMessage().hashCode() : 0);
-		result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-		result = 31 * result + getParentid();
-		result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
-		result = 31 * result + (int) getPosterauthority();
-		result = 31 * result + (int) getReviewed();
-		result = 31 * result + (int) getStickied();
-		result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
-		result = 31 * result + (getTag() != null ? getTag().hashCode() : 0);
-		result = 31 * result + getThumbH();
-		result = 31 * result + getThumbW();
-		result = 31 * result + (getTripcode() != null ? getTripcode().hashCode() : 0);
-		return result;
+		return Objects.hash(postPK, bumped, deletedTimestamp, email, file, fileMd5, fileOriginal, fileSize, fileSizeFormatted, fileType, imageH, imageW, ip, ipmd5, isDeleted, locked, message, name, parentid, password, posterauthority, reviewed, stickied, subject, tag, thumbH, thumbW, timestamp, tripcode);
 	}
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", boardid=" + boardid +
-                ", bumped=" + bumped +
-                ", deletedTimestamp=" + deletedTimestamp +
-                ", email='" + email + '\'' +
-                ", file='" + file + '\'' +
-                ", fileMd5='" + fileMd5 + '\'' +
-                ", fileOriginal='" + fileOriginal + '\'' +
-                ", fileSize=" + fileSize +
-                ", fileSizeFormatted='" + fileSizeFormatted + '\'' +
-                ", fileType='" + fileType + '\'' +
-                ", imageH=" + imageH +
-                ", imageW=" + imageW +
-                ", ip='" + ip + '\'' +
-                ", ipmd5='" + ipmd5 + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", locked=" + locked +
-                ", message='" + message + '\'' +
-                ", name='" + name + '\'' +
-                ", parentid=" + parentid +
-                ", password='" + password + '\'' +
-                ", posterauthority=" + posterauthority +
-                ", reviewed=" + reviewed +
-                ", stickied=" + stickied +
-                ", subject='" + subject + '\'' +
-                ", tag='" + tag + '\'' +
-                ", thumbH=" + thumbH +
-                ", thumbW=" + thumbW +
-                ", timestamp=" + timestamp +
-                ", tripcode='" + tripcode + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("Post{");
+		sb.append("postPK=").append(postPK);
+		sb.append(", bumped=").append(bumped);
+		sb.append(", deletedTimestamp=").append(deletedTimestamp);
+		sb.append(", email='").append(email).append('\'');
+		sb.append(", file='").append(file).append('\'');
+		sb.append(", fileMd5='").append(fileMd5).append('\'');
+		sb.append(", fileOriginal='").append(fileOriginal).append('\'');
+		sb.append(", fileSize=").append(fileSize);
+		sb.append(", fileSizeFormatted='").append(fileSizeFormatted).append('\'');
+		sb.append(", fileType='").append(fileType).append('\'');
+		sb.append(", imageH=").append(imageH);
+		sb.append(", imageW=").append(imageW);
+		sb.append(", ip='").append(ip).append('\'');
+		sb.append(", ipmd5='").append(ipmd5).append('\'');
+		sb.append(", isDeleted=").append(isDeleted);
+		sb.append(", locked=").append(locked);
+		sb.append(", message='").append(message).append('\'');
+		sb.append(", name='").append(name).append('\'');
+		sb.append(", parentid=").append(parentid);
+		sb.append(", password='").append(password).append('\'');
+		sb.append(", posterauthority=").append(posterauthority);
+		sb.append(", reviewed=").append(reviewed);
+		sb.append(", stickied=").append(stickied);
+		sb.append(", subject='").append(subject).append('\'');
+		sb.append(", tag='").append(tag).append('\'');
+		sb.append(", thumbH=").append(thumbH);
+		sb.append(", thumbW=").append(thumbW);
+		sb.append(", timestamp=").append(timestamp);
+		sb.append(", tripcode='").append(tripcode).append('\'');
+		sb.append('}');
+		return sb.toString();
+	}
 }

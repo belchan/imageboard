@@ -12,10 +12,10 @@ import java.util.List;
 @Service
 public class PostDAO extends BaseDAODeprecated<Post> {
 
-    public static String COL_BOARD_ID = "boardid";
-    public static String COL_PARENT_ID = "parentid";
-    public static String COL_BUMPED = "bumped";
-    public static String COL_ID = "id";
+    private static String COL_BOARD_ID = "postPK.boardid";
+    private static String COL_PARENT_ID = "parentid";
+    private static String COL_BUMPED = "bumped";
+    private static String COL_ID = "postPK.id";
 
 
     public Post getLatestPostFromBoard(int boardId) {

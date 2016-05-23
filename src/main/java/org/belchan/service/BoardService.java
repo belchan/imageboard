@@ -59,7 +59,7 @@ public class BoardService {
             Integer thread = Integer.valueOf(threadId);
             Board board = boardDAO.get(boardName);
             List<Post> posts = postDAO.getPosts(board.getId(),thread);
-            Post mainPost = boardDAO.getEntity(Post.class,thread);
+            Post mainPost = postDAO.get(board.getId(),thread);
             posts.add(0,mainPost);
             return  posts;
         } catch (Exception ex) {
