@@ -9,8 +9,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 
 /**
  * The persistent class for the posts database table.

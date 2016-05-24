@@ -1,4 +1,4 @@
-package org.belchan.model;
+package org.belchan.entity;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
