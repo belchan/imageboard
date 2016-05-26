@@ -34,7 +34,7 @@ public class ManageController {
             method = {RequestMethod.GET}
     )
     public @ResponseBody
-    List<Staff> findByUserName(@PathVariable("username") String username) {
+    Staff findByUserName(@PathVariable("username") String username) {
         return staffService.findByUsername(username);
     }
 }
