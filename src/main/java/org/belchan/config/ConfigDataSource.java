@@ -1,5 +1,7 @@
 package org.belchan.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -21,6 +23,8 @@ public class ConfigDataSource {
     @Value("${dataSource.driverClassName}")
     private String driver;
 
+    Logger logger = LoggerFactory.getLogger(getClass().getName());
+    
     @Bean
     @Profile("PROD")
     @Qualifier("dataSource")
@@ -36,14 +40,14 @@ public class ConfigDataSource {
         dsb.url(dataSourceMysqlUrlOpenShift);
         dsb.username(mysqlUsernameOpenShift);
         dsb.password(mysqlPasswordOpenShift);
-        System.out.println("=====================BEGIN=========PROD===============");
-        System.out.println("URL");
-        System.out.println(dataSourceMysqlUrlOpenShift);
-        System.out.println("USER");
-        System.out.println(mysqlUsernameOpenShift);
-        System.out.println("PASS");
-        System.out.println(mysqlPasswordOpenShift);
-        System.out.println("=====================END==============================");
+        logger.info("=====================BEGIN=========PROD===============");
+        logger.info("URL");
+        logger.info(dataSourceMysqlUrlOpenShift);
+        logger.info("USER");
+        logger.info(mysqlUsernameOpenShift);
+        logger.info("PASS");
+        logger.info(mysqlPasswordOpenShift);
+        logger.info("=====================END==============================");
         return dsb.build();
     }
 
@@ -57,14 +61,14 @@ public class ConfigDataSource {
         dsb.url(url);
         dsb.username(username);
         dsb.password(password);
-        System.out.println("=====================BEGIN=========DEV================");
-        System.out.println("URL");
-        System.out.println(url);
-        System.out.println("USER");
-        System.out.println(username);
-        System.out.println("PASS");
-        System.out.println(password);
-        System.out.println("=====================END==============================");
+        logger.info("=====================BEGIN=========DEV================");
+        logger.info("URL");
+        logger.info(url);
+        logger.info("USER");
+        logger.info(username);
+        logger.info("PASS");
+        logger.info(password);
+        logger.info("=====================END==============================");
         return dsb.build();
     }
 
