@@ -1,6 +1,7 @@
 package org.belchan;
 
 import org.belchan.config.Config;
+import org.belchan.config.Env;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 
 @SpringBootApplication
 public class ImageBoardApplication {
+
     public ImageBoardApplication() {
     }
 
@@ -16,6 +18,12 @@ public class ImageBoardApplication {
         for (String envName : env.keySet()) {
             System.out.format("%s=%s%n", envName, env.get(envName));
         }
+        try {
+            Config.env = Env.valueOf(args[0]);
+        } catch (Throwable throwable) {
+            Config.env = Env.DEV;
+        }
+
         SpringApplication.run(new Class[]{ImageBoardApplication.class, Config.class}, args);
     }
 }

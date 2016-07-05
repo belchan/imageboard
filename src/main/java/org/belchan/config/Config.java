@@ -59,6 +59,8 @@ public class Config implements TransactionManagementConfigurer {
     @Value("${email.port}")
     private String emailPort;
 
+    public static Env env;
+
     public Config() {
     }
 //
@@ -66,11 +68,7 @@ public class Config implements TransactionManagementConfigurer {
 //    public DataSource buildDataSource() {
 //        HikariConfig config = new HikariConfig();
 //        config.setDriverClassName(this.driver);
-//        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-//        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-//        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
-//        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-//        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+
 //
 //        if (Objects.isNull(mysqlPasswordOpenShift)) {
 //            //DEV
@@ -80,7 +78,7 @@ public class Config implements TransactionManagementConfigurer {
 //        } else {
 //            //PROD
 //            //jdbc:mysql://${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/${OPENSHIFT_APP_NAME}
-//            String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift;
+
 //            config.setJdbcUrl(dataSourceMysqlUrlOpenShift);
 //            config.setUsername(mysqlUsernameOpenShift);
 //            config.setPassword(mysqlPasswordOpenShift);
@@ -100,10 +98,33 @@ public class Config implements TransactionManagementConfigurer {
     @Bean
     public DataSource buildDataSource() {
         DataSourceBuilder dsb = DataSourceBuilder.create();
-        dsb.driverClassName(driver);
-        dsb.url(url);
-        dsb.username(username);
-        dsb.password(password);
+        switch (env) {
+            case PROD: {
+                String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+                String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+                String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
+                String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+                String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+                String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift;
+                dsb.driverClassName(driver);
+                dsb.url(dataSourceMysqlUrlOpenShift);
+                dsb.username(mysqlUsernameOpenShift);
+                dsb.password(mysqlPasswordOpenShift);
+            }
+            break;
+            case TEST: {
+
+            }
+            break;
+            case DEV:
+            default: {
+                dsb.driverClassName(driver);
+                dsb.url(url);
+                dsb.username(username);
+                dsb.password(password);
+            }
+            break;
+        }
         return dsb.build();
     }
 
