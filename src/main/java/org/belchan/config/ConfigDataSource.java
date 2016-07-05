@@ -36,14 +36,14 @@ public class ConfigDataSource {
         dsb.url(dataSourceMysqlUrlOpenShift);
         dsb.username(mysqlUsernameOpenShift);
         dsb.password(mysqlPasswordOpenShift);
-        System.out.println("=====================BEGIN========================");
+        System.out.println("=====================BEGIN=========PROD===============");
         System.out.println("URL");
         System.out.println(dataSourceMysqlUrlOpenShift);
         System.out.println("USER");
         System.out.println(mysqlUsernameOpenShift);
         System.out.println("PASS");
         System.out.println(mysqlPasswordOpenShift);
-        System.out.println("=====================END========================");
+        System.out.println("=====================END==============================");
         return dsb.build();
     }
 
@@ -57,6 +57,14 @@ public class ConfigDataSource {
         dsb.url(url);
         dsb.username(username);
         dsb.password(password);
+        System.out.println("=====================BEGIN=========DEV================");
+        System.out.println("URL");
+        System.out.println(url);
+        System.out.println("USER");
+        System.out.println(username);
+        System.out.println("PASS");
+        System.out.println(password);
+        System.out.println("=====================END==============================");
         return dsb.build();
     }
 
