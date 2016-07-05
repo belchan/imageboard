@@ -36,7 +36,14 @@ public class ConfigDataSource {
         dsb.url(dataSourceMysqlUrlOpenShift);
         dsb.username(mysqlUsernameOpenShift);
         dsb.password(mysqlPasswordOpenShift);
-
+        System.out.println("=====================BEGIN========================");
+        System.out.println("URL");
+        System.out.println(dataSourceMysqlUrlOpenShift);
+        System.out.println("USER");
+        System.out.println(mysqlUsernameOpenShift);
+        System.out.println("PASS");
+        System.out.println(mysqlPasswordOpenShift);
+        System.out.println("=====================END========================");
         return dsb.build();
     }
 
