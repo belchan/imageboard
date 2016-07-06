@@ -53,7 +53,6 @@ public class SinglePageController extends BelchanAbstractController {
             e.printStackTrace();
             return e.getLocalizedMessage();
         }
-        ;
     }
 
 }
