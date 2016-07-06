@@ -1,5 +1,6 @@
 package org.belchan.mvc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 @Controller
 public class SinglePageController extends BelchanAbstractController {
@@ -36,4 +39,21 @@ public class SinglePageController extends BelchanAbstractController {
         setStatus(response, boardName, "0", "0");
         return "board.html";
     }
+
+
+
+    @Autowired
+    DataSource dataSource;
+
+    @RequestMapping(value = "info")
+    public String getInfo() {
+        try {
+            return dataSource.getConnection().toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return e.getLocalizedMessage();
+        }
+        ;
+    }
+
 }
