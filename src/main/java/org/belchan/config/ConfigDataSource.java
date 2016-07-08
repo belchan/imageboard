@@ -26,9 +26,9 @@ public class ConfigDataSource {
     Logger logger = LoggerFactory.getLogger(getClass().getName());
     
     @Bean
-    @Profile("PROD")
+    @Profile("openshift")
     @Qualifier("dataSource")
-    public DataSource buildDataSourceProd() {
+    public DataSource buildDataSourceOpenShift() {
         DataSourceBuilder dsb = DataSourceBuilder.create();
         String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
         String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
