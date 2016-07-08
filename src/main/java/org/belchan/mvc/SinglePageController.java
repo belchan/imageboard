@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 @Controller
 public class SinglePageController extends BelchanAbstractController {
@@ -49,11 +48,16 @@ public class SinglePageController extends BelchanAbstractController {
     @RequestMapping(value = "info")
     public @ResponseBody String getInfo() {
         try {
-            return dataSource.getConnection().toString();
-        } catch (SQLException e) {
+            return dataSource.toString();
+        } catch (Throwable e) {
             e.printStackTrace();
             return e.getLocalizedMessage();
         }
+    }
+
+    @RequestMapping(value = "hello")
+    public @ResponseBody String getHello() {
+        return "Hello world!";
     }
 
 }

@@ -5,3 +5,33 @@
 .thread {
     background-color: beige;
 }
+
+.postbox {
+    overflow: hidden;
+    width: 600px
+}
+
+.box {
+    white-space: nowrap
+}
+
+.box div {
+    width: 90px;
+    display: inline-block;
+    border: 1px solid black
+}
+
+.alt2 {
+    margin: 0px;
+    padding: 6px;
+    border: 0px inset;
+}
+
+.smallfont {
+    margin-bottom: 2px;
+}
+
+.spoil {
+    margin: 10px;
+    margin-top: 5px;
+}

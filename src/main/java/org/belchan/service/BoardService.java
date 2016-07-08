@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
-
 package org.belchan.service;
 
 import org.belchan.dao.BoardDAO;
@@ -13,7 +8,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -64,7 +59,7 @@ public class BoardService {
             return  posts;
         } catch (Exception ex) {
             ex.printStackTrace();
-            return new ArrayList<Post>();
+            return Collections.emptyList();
         }
 
     }
