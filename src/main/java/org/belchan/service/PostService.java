@@ -39,8 +39,9 @@ public class PostService {
         }
         Post post = createOrUpdatePost(name, email, subj, text, password, tag, ip, tripCode, board, thread);
         if (thread == 0) {
-            int postId = post.getPostPK().getId();
-            return String.valueOf(postId);
+            int postId /*= post.getPostPK().getId() FIX IT*/;
+            Post nemMaxPost = postDAO.getFirstPosts(board,1,0).get(0);
+            return String.valueOf(nemMaxPost.getPostPK().getId());
         } else  {
             Post threadPost = postDAO.get(board.getId(),thread);
             threadPost.setBumped(LocalDateTime.now());

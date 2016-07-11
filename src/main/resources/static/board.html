@@ -2,10 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/belchan.css">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/belchan.css">
     <title>Board</title>
+    <meta name="description" content="">
+    <meta name="author" content="Volt">
 </head>
 <body id="body">
+<a href="/">На главную</a>
+<div class="container postbox" id="newPostBox">
+    <div class="spoil">
+        <div class="smallfont" align="center"><input type="button" value="Создать новый тред"
+                                                     class="btn input-button"
+                                                     onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = 'Не создавать новый тред'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Создать новый тред'; }"/>
+        </div>
+        <div class="alt2">
+            <div style="display: none;">
+                <form role="form" class="form-group">
+                    <div class="form-group">
+                        <div class="left-lable"><label for="name">Імя:</label></div>
+                        <div class="field">
+                            <input type="text" class="form-control" id="name" name="name"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="left-lable"><label for="email">E-mail:</label></div>
+                        <div class="field">
+                            <input type="email" class="form-control" id="email" name="email"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="left-lable"><label for="subject">Тэма:</label></div>
+                        <div class="field">
+                            <input type="text" class="form-control" id="subject" name="subject"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="left-lable"><label for="message">Тэкст:</label></div>
+                        <div class="field">
+                            <textarea class="form-control" rows="5" id="message" name="message"></textarea></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="left-lable"><label for="pwd">Пароль:</label></div>
+                        <div class="field">
+                            <input type="password" class="form-control" id="pwd" name="password"></div>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="checkbox" required>Я не буду посціць лухту</label>
+                    </div>
+                    <button type="button" class="btn btn-default" id="sendPost">Даслаць</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <p>
 </p>
 <div id="templates" class="templates">
@@ -20,5 +67,6 @@
 <script src="js/jquery-2.2.3.js"></script>
 <script src="js/cookie.js"></script>
 <script src="js/board.js"></script>
+<script src="js/post.js"></script>
 </body>
 </html>

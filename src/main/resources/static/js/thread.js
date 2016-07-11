@@ -54,4 +54,6 @@ jQuery(document).ready(function ($) {
     request.fail(function( jqXHR, textStatus ) {
        // alert( "Request failed: " + textStatus );
     });
+    $("#backTag").text("Наверх");
+    $("#backTag").prop("href","/" + board);
 });
