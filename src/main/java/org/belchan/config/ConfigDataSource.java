@@ -23,7 +23,7 @@ public class ConfigDataSource {
     @Value("${dataSource.driverClassName}")
     private String driver;
 
-    Logger logger = LoggerFactory.getLogger(getClass().getName());
+    private static final Logger logger = LoggerFactory.getLogger(ConfigDataSource.class);
     
     @Bean
     @Profile("openshift")
@@ -35,7 +35,7 @@ public class ConfigDataSource {
         String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
         String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
         String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-        String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift + "?useUnicode=true&characterEncoding=utf8";
+        String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true";
         dsb.driverClassName(driver);
         dsb.url(dataSourceMysqlUrlOpenShift);
         dsb.username(mysqlUsernameOpenShift);
