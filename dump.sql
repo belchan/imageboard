@@ -1,3 +1,11 @@
+CREATE USER 'belchan'@'localhost' IDENTIFIED BY 'Rn758DQQcH7NnbGQ';
+GRANT USAGE ON * . * TO 'belchan'@'localhost' IDENTIFIED BY 'Rn758DQQcH7NnbGQ' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+CREATE DATABASE IF NOT EXISTS `belchan` ;
+GRANT ALL PRIVILEGES ON `belchan` . * TO 'belchan'@'localhost';
+GRANT ALL PRIVILEGES ON `belchan\_%` . * TO 'belchan'@'localhost';
+
+
+use belchan;
 -- MySQL dump 10.13  Distrib 5.7.12, for Linux (x86_64)
 --
 -- Host: localhost    Database: belchan

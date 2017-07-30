@@ -6,10 +6,8 @@ import org.belchan.ui.Message;
 import org.belchan.ui.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -25,6 +23,8 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
+
+import static org.belchan.config.SecretData.emailNRpass;
 
 @Configuration
 @EnableTransactionManagement
@@ -78,7 +78,8 @@ public class Config implements TransactionManagementConfigurer {
         EmailAccount emailAccount = new EmailAccount();
         emailAccount.setEMAIL(this.emailLogin);
         emailAccount.setLOGIN(this.emailLogin);
-        emailAccount.setPASSWORD(this.emailPassword);
+//        emailAccount.setPASSWORD(this.emailPassword);
+        emailAccount.setPASSWORD(emailNRpass);
         emailAccount.setSERVER(this.emailServer);
         emailAccount.setSmtpPort(this.emailPort);
         return emailAccount;
@@ -104,7 +105,7 @@ public class Config implements TransactionManagementConfigurer {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.MYSQL);
         vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setShowSql(false);
+        vendorAdapter.setShowSql(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);

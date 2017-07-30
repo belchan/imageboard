@@ -1,13 +1,11 @@
 package org.belchan.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
-
-/**
- * The persistent class for the events database table.
- * 
- */
+@Data
 @Entity
 @Table(name="events")
 @NamedQuery(name="Event.findAll", query="SELECT e FROM Event e")
@@ -20,24 +18,4 @@ public class Event implements Serializable {
 	private int at;
 
 	private String name;
-
-	public Event() {
-	}
-
-	public int getAt() {
-		return this.at;
-	}
-
-	public void setAt(int at) {
-		this.at = at;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 }

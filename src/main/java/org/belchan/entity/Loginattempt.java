@@ -1,13 +1,11 @@
 package org.belchan.entity;
 
+import lombok.Data;
 import java.io.Serializable;
 import javax.persistence.*;
 
 
-/**
- * The persistent class for the loginattempts database table.
- * 
- */
+@Data
 @Entity
 @Table(name="loginattempts")
 @NamedQuery(name="Loginattempt.findAll", query="SELECT l FROM Loginattempt l")
@@ -22,32 +20,4 @@ public class Loginattempt implements Serializable {
 	private int timestamp;
 
 	private String username;
-
-	public Loginattempt() {
-	}
-
-	public String getIp() {
-		return this.ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public int getTimestamp() {
-		return this.timestamp;
-	}
-
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 }

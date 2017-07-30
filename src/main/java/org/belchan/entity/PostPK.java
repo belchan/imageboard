@@ -1,41 +1,19 @@
 package org.belchan.entity;
 
+import lombok.Data;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Data
 @Embeddable
 public class PostPK implements Serializable {
 
     public static final long serialVersionUID = 20160525L;
 
-    private Integer id;
+	private Integer id;
 
-    private Integer boardid;
-
-    public PostPK() {
-    }
-
-    public PostPK(int id, int boardid) {
-        this.id = id;
-        this.boardid = boardid;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getBoardid() {
-        return boardid;
-    }
-
-    public void setBoardid(int boardid) {
-        this.boardid = boardid;
-    }
+	private Integer boardid;
 
     @Override
     public boolean equals(Object o) {

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
@@ -24,36 +23,35 @@ public class ConfigDataSource {
     private String driver;
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigDataSource.class);
-    
-    @Bean
-    @Profile("openshift")
-    @Qualifier("dataSource")
-    public DataSource buildDataSourceOpenShift() {
-        DataSourceBuilder dsb = DataSourceBuilder.create();
-        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
-        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-        String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true";
-        dsb.driverClassName(driver);
-        dsb.url(dataSourceMysqlUrlOpenShift);
-        dsb.username(mysqlUsernameOpenShift);
-        dsb.password(mysqlPasswordOpenShift);
-        logger.info("=====================BEGIN=========PROD===============");
-        logger.info("URL");
-        logger.info(dataSourceMysqlUrlOpenShift);
-        logger.info("USER");
-        logger.info(mysqlUsernameOpenShift);
-        logger.info("PASS");
-        logger.info(mysqlPasswordOpenShift);
-        logger.info("=====================END==============================");
-        return dsb.build();
-    }
+//
+//    @Bean
+//    @Profile("openshift")
+//    @Qualifier("dataSource")
+//    public DataSource buildDataSourceOpenShift() {
+//        DataSourceBuilder dsb = DataSourceBuilder.create();
+//        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+//        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+//        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
+//        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+//        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+//        String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true";
+//        dsb.driverClassName(driver);
+//        dsb.url(dataSourceMysqlUrlOpenShift);
+//        dsb.username(mysqlUsernameOpenShift);
+//        dsb.password(mysqlPasswordOpenShift);
+//        logger.info("=====================BEGIN=========PROD===============");
+//        logger.info("URL");
+//        logger.info(dataSourceMysqlUrlOpenShift);
+//        logger.info("USER");
+//        logger.info(mysqlUsernameOpenShift);
+//        logger.info("PASS");
+//        logger.info(mysqlPasswordOpenShift);
+//        logger.info("=====================END==============================");
+//        return dsb.build();
+//    }
 
 
     @Bean
-    @Profile("DEV")
     @Qualifier("dataSource")
     public DataSource buildDataSourceDev() {
         DataSourceBuilder dsb = DataSourceBuilder.create();

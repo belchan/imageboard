@@ -11,12 +11,12 @@ jQuery(document).ready(function ($) {
                 email: $("#email").val(),
                 subj: $("#subject").val(),
                 text: $("#message").val(),
-                file : "notSupport",
-                embeded : "notSupport",
-                embededType : "notSupport",
+                file : "n",
+                embeded : "n",
+                embededType : "n",
                 password: $("#pwd").val(),
-                tag : "notSupport",
-                tripCode : "notSupport"
+                tag : "n",
+                tripCode : "n"
             },
             dataType: "json"
         });

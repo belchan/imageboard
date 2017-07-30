@@ -1,13 +1,11 @@
 package org.belchan.entity;
 
+import lombok.Data;
 import java.io.Serializable;
 import javax.persistence.*;
 
 
-/**
- * The persistent class for the blotter database table.
- * 
- */
+@Data
 @Entity
 @Table(name="blotter")
 @NamedQuery(name="Blotter.findAll", query="SELECT b FROM Blotter b")
@@ -24,40 +22,4 @@ public class Blotter implements Serializable {
 
 	@Lob
 	private String message;
-
-	public Blotter() {
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getAt() {
-		return this.at;
-	}
-
-	public void setAt(int at) {
-		this.at = at;
-	}
-
-	public byte getImportant() {
-		return this.important;
-	}
-
-	public void setImportant(byte important) {
-		this.important = important;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 }

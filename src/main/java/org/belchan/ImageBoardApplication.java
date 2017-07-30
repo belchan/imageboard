@@ -1,23 +1,20 @@
 package org.belchan;
 
+import org.belchan.config.Config;
 import org.belchan.config.ConfigDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Map;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class ImageBoardApplication {
-
-    public ImageBoardApplication() {
-    }
-
     public static void main(String[] args) {
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }
-
-        SpringApplication.run(new Class[]{ImageBoardApplication.class, ConfigDataSource.class,org.belchan.config.Config.class}, args);
+        SpringApplication.run(
+                new Class[]{
+                        ImageBoardApplication.class,
+                        ConfigDataSource.class,
+                        Config.class},
+                args);
     }
 }

@@ -1,13 +1,11 @@
 package org.belchan.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
-
-/**
- * The persistent class for the modlog database table.
- * 
- */
+@Data
 @Entity
 @Table(name="modlog")
 @NamedQuery(name="Modlog.findAll", query="SELECT m FROM Modlog m")
@@ -26,47 +24,4 @@ public class Modlog implements Serializable {
 	private int timestamp;
 
 	private String user;
-
-	public Modlog() {
-	}
-
-	public byte getCategory() {
-		return this.category;
-	}
-
-	public void setCategory(byte category) {
-		this.category = category;
-	}
-
-	public String getEntry() {
-		return this.entry;
-	}
-
-	public void setEntry(String entry) {
-		this.entry = entry;
-	}
-
-	public int getTimestamp() {
-		return this.timestamp;
-	}
-
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public String getUser() {
-		return this.user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 }

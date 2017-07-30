@@ -1,11 +1,12 @@
 package org.belchan.service;
 
 import org.belchan.dao.BoardDAO;
-import org.belchan.repository.BoardRepository;
 import org.belchan.dao.PostDAO;
-import org.belchan.repository.PostRepository;
 import org.belchan.entity.Board;
 import org.belchan.entity.Post;
+import org.belchan.entity.PostPK;
+import org.belchan.repository.BoardRepository;
+import org.belchan.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PostService {
@@ -53,7 +57,9 @@ public class PostService {
 
     private Post createOrUpdatePost(String name, String email, String subj, String text, String password, String tag, String ip, String tripCode, Board board, int thread) {
         Post post = new Post();
-        post.getPostPK().setBoardid(board.getId());
+        PostPK postPK = new PostPK();
+        postPK.setBoardid(board.getId());
+        post.setPostPK(postPK);
         post.setBumped(LocalDateTime.now());
         post.setEmail(email);
         post.setFile("");
@@ -109,4 +115,22 @@ public class PostService {
 
         return md5Hex;
     }
+
+    private static Map<Long, LocalDateTime> timeCheck = new HashMap<>();
+
+    public List<Post> getPostsAfter(Long chatId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime previousTimeCheck = timeCheck.get(chatId);
+        List<Post> posts;
+        if (previousTimeCheck != null) {
+        	posts = postDAO.getPostsAfter(previousTimeCheck);
+        } else {
+        	posts = postDAO.getLastPost();
+        }
+        timeCheck.put(chatId, now);
+        return posts;
+        
+    }
+
+
 }
