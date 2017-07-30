@@ -1,9 +1,10 @@
 package org.belchan.service;
 
-import org.belchan.dao.BoardDAO;
-import org.belchan.dao.PostDAO;
 import org.belchan.entity.Board;
 import org.belchan.entity.Post;
+import org.belchan.entity.PostPK;
+import org.belchan.repository.BoardRepository;
+import org.belchan.repository.PostRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,46 +16,39 @@ import java.util.List;
 public class BoardService {
 
     @Autowired
-    BoardDAO boardDAO;
+    PostRepository postRepository;
 
     @Autowired
-    PostDAO postDAO;
+    BoardRepository boardRepository;
 
     public BoardService() {
     }
 
     public List<Board> getBoards() {
-        return this.boardDAO.getEntitys(Board.class);
+        return this.boardRepository.findAll();
     }
 
     public Board getBoard(int id) {
-        return this.boardDAO.get(id);
+        return this.boardRepository.findOne(id);
     }
 
     public Board getBoard(String boardName) {
-        return boardDAO.get(boardName);
+        return boardRepository.findByNameIgnoreCase(boardName);
     }
 
     public List<Post> getPagePosts(String boardName, int page) {
-        Board b = boardDAO.get(boardName);
-        List<Post> posts = postDAO.getFirstPosts(b, 10, page);
+        Board b = boardRepository.findByNameIgnoreCase(boardName);
+        List<Post> posts = postRepository.findTop10ByPostPK_BoardidAndParentidOrderByBumpedDesc(b.getId(), 0);
         Hibernate.initialize(posts);
         return posts;
-    }
-
-    public List<Post> getThreadPosts(Board b, int numThread) {
-        List<Post> l = this.postDAO.getPosts(b.getId(), numThread);
-        Post p = this.postDAO.getHeadPost(b.getId(), numThread);
-        l.add(0, p);
-        return l;
     }
 
     public List<Post> getPosts(String boardName, String threadId) {
         try {
             Integer thread = Integer.valueOf(threadId);
-            Board board = boardDAO.get(boardName);
-            List<Post> posts = postDAO.getPosts(board.getId(),thread);
-            Post mainPost = postDAO.get(board.getId(),thread);
+            Board board = getBoard(boardName);
+            List<Post> posts = postRepository.findByPostPK_BoardidAndParentid(board.getId(),thread);
+            Post mainPost = postRepository.findByPostPK(new PostPK(thread, board.getId()));
             posts.add(0,mainPost);
             return  posts;
         } catch (Exception ex) {

@@ -1,7 +1,5 @@
 package org.belchan.service;
 
-import org.belchan.dao.BoardDAO;
-import org.belchan.dao.PostDAO;
 import org.belchan.entity.Board;
 import org.belchan.entity.Post;
 import org.belchan.entity.PostPK;
@@ -14,6 +12,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +27,8 @@ public class PostService {
     @Autowired
     BoardRepository boardRepository;
 
-    @Autowired
-    BoardDAO boardDAO;
-
-    @Autowired
-    PostDAO postDAO;
-
     public String addNewPost(String boardName, String threadId, String name, String email, String subj, String text, String file, String embeded, String embededType, String password, String tag, String ip, String tripCode) {
-        Board board = boardDAO.get(boardName);
+        Board board = boardRepository.findByNameIgnoreCase(boardName);
         int thread = 0;
         try {
             thread = Integer.parseInt(threadId);
@@ -43,13 +37,12 @@ public class PostService {
         }
         Post post = createOrUpdatePost(name, email, subj, text, password, tag, ip, tripCode, board, thread);
         if (thread == 0) {
-            int postId /*= post.getPostPK().getId() FIX IT*/;
-            Post nemMaxPost = postDAO.getFirstPosts(board,1,0).get(0);
-            return String.valueOf(nemMaxPost.getPostPK().getId());
+            post = postRepository.findByBumped(post.getBumped());
+            return String.valueOf(post.getPostPK().getId());
         } else  {
-            Post threadPost = postDAO.get(board.getId(),thread);
+            Post threadPost = postRepository.findByPostPK(new PostPK(thread, board.getId()));
             threadPost.setBumped(LocalDateTime.now());
-            postDAO.saveOrUpdate(threadPost);
+            postRepository.save(threadPost);
             return String.valueOf(thread);
         }
 
@@ -87,8 +80,8 @@ public class PostService {
         post.setThumbW(0);
         post.setTimestamp(LocalDateTime.now());
         post.setTripcode(tripCode);
-        postDAO.saveOrUpdate(post);
-        return post;
+        post.setDeletedTimestamp(0L);
+        return postRepository.saveAndFlush(post);
     }
 
     public String md5Custom(String st) {
@@ -123,9 +116,12 @@ public class PostService {
         LocalDateTime previousTimeCheck = timeCheck.get(chatId);
         List<Post> posts;
         if (previousTimeCheck != null) {
-        	posts = postDAO.getPostsAfter(previousTimeCheck);
+            long timestamp = previousTimeCheck.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+            timestamp = timestamp / 1000;
+        	posts = postRepository.findByDeletedTimestampOrderByTimestampAsc(timestamp);
         } else {
-        	posts = postDAO.getLastPost();
+        	posts = postRepository.findTop2ByDeletedTimestampOrderByTimestampAsc(0L);
+
         }
         timeCheck.put(chatId, now);
         return posts;

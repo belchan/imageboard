@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository("BoardRepository")
 public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+    public Board findByNameIgnoreCase(String name);
 }
