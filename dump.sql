@@ -643,3 +643,11 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-05-26 23:47:20
+
+-- V0.3
+ALTER TABLE `belchan`.`telegram_request_history`
+CHANGE COLUMN `id` `id` BIGINT(20) NOT NULL ,
+CHANGE COLUMN `telegram_chat_id` `telegram_chat_id` BIGINT(20) NULL DEFAULT NULL ;
+
+ALTER TABLE `belchan`.`telegram_request_history` 
+CHANGE COLUMN `id` `id` BIGINT(20) NOT NULL AUTO_INCREMENT ;

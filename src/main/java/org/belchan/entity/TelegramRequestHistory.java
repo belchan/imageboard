@@ -17,11 +17,16 @@ public class TelegramRequestHistory implements Serializable {
     private Long id;
 
     @Column(name = "telegram_chat_id")
-    private TelegramChat telegramChat;
+//    private TelegramChat telegramChat;
+    private Long telegramChat;
 
     @Lob
     private String text;
 
     @Column(name = "create_time")
     private LocalDateTime createTime;
+
+    public void setTelegramChat(TelegramChat telegramChat) {
+        this.telegramChat = telegramChat.getId();
+    }
 }
