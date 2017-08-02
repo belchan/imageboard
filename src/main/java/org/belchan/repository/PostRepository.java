@@ -9,9 +9,8 @@ import java.util.List;
 
 @Repository("PostRepository")
 public interface PostRepository  extends JpaRepository<Post, Integer> {
-//    public List<Post> findFirstByTimestamp(Long timestamp);
-    public List<Post> findTop2ByDeletedTimestampOrderByTimestampAsc(Long deletedTimestamp);
-    public List<Post> findByDeletedTimestampOrderByTimestampAsc(Long deletedTimestamp);
+    public List<Post> findTop2ByDeletedTimestampOrderByTimestampDesc(Long deletedTimestamp);
+    public List<Post> findByDeletedTimestampOrderByTimestampDesc(Long deletedTimestamp);
     public List<Post> findTop10ByPostPK_BoardidAndParentidOrderByBumpedDesc(Integer postPK_boardid, int parentid);
     public List<Post> findByPostPK_BoardidAndParentid(Integer postPK_boardid, int parentid);
     public Post findByPostPK(PostPK postPK);

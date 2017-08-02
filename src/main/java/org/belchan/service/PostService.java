@@ -13,7 +13,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,9 +117,9 @@ public class PostService {
         if (previousTimeCheck != null) {
             long timestamp = previousTimeCheck.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
             timestamp = timestamp / 1000;
-        	posts = postRepository.findByDeletedTimestampOrderByTimestampAsc(timestamp);
+        	posts = postRepository.findByDeletedTimestampOrderByTimestampDesc(timestamp);
         } else {
-        	posts = postRepository.findTop2ByDeletedTimestampOrderByTimestampAsc(0L);
+        	posts = postRepository.findTop2ByDeletedTimestampOrderByTimestampDesc(0L);
 
         }
         timeCheck.put(chatId, now);
