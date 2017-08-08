@@ -4,96 +4,86 @@ package org.belchan.service.email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.File;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 
-public class SendEmail extends Thread {
-    private EmailAccount emailAccount;
-    private String AUTH;
-    private String emailTo;
-    protected String emailCc;
-    protected String subject;
-    protected String messageBody;
-    protected List<File> attachmentFiles;
-    protected Logger logger;
-
+@Service
+public class SendEmail {
+    
     @Autowired
-    public void setSendEmail(EmailAccount myemailAccount) {
-        this.emailAccount = myemailAccount;
+    private EmailAccount emailAccount;
+
+    private String AUTH = "true";;
+    private Logger logger = LoggerFactory.getLogger(SendEmail.class);
+
+    public void send(String emailTo, String subject, String messageBody) {
+        send(emailTo, null, null, subject, messageBody, Collections.emptyList());
     }
 
-    public SendEmail(String emailTo, String subject, String messageBody) {
-        this(emailTo, (String)null, subject, messageBody, (List)null);
-    }
+    public void send(String emailTo, String emailCc, String emailBCC, String subject, String messageBody, List<File> attachmentFiles) {
+        Runnable runnable = () -> {
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", AUTH);
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", emailAccount.getSERVER());
+            props.put("mail.smtp.port", emailAccount.getSmtpPort());
+            Session session = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(emailAccount.getLOGIN(), emailAccount.getPASSWORD());
+                }
+            });
 
-    public SendEmail(String emailTo, String emailCc, String subject, String messageBody, List<File> attachmentFiles) {
-        this.AUTH = "true";
-        this.logger = LoggerFactory.getLogger(this.getClass().getName());
-        this.emailTo = emailTo;
-        this.emailCc = emailCc;
-        this.subject = subject;
-        this.messageBody = messageBody;
-        this.attachmentFiles = attachmentFiles;
-    }
-
-    public void run() {
-        UUID id = UUID.randomUUID();
-        this.logger.debug("Start " + id.toString() + ".run()");
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", this.AUTH);
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", this.emailAccount.getSERVER());
-        props.put("mail.smtp.port", this.emailAccount.getSmtpPort());
-        Session session = Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(SendEmail.this.emailAccount.getLOGIN(), SendEmail.this.emailAccount.getPASSWORD());
-            }
-        });
-
-        try {
-            MimeMessage e = new MimeMessage(session);
-            e.setFrom(new InternetAddress(this.emailAccount.getEMAIL()));
-            e.setRecipients(RecipientType.TO, InternetAddress.parse(this.emailTo));
-            e.setSubject(this.subject);
-            e.setText(this.messageBody);
-            if(this.attachmentFiles == null) {
-                e.setContent(this.messageBody, "text/html; charset=utf-8");
-            } else {
-                MimeBodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText("messageBody");
-                MimeMultipart multipart = new MimeMultipart();
-                multipart.addBodyPart(messageBodyPart);
-                messageBodyPart = new MimeBodyPart();
-                Iterator var7 = this.attachmentFiles.iterator();
-
-                while(var7.hasNext()) {
-                    File file = (File)var7.next();
-                    FileDataSource source = new FileDataSource(file);
-                    messageBodyPart.setDataHandler(new DataHandler(source));
-                    messageBodyPart.setFileName(file.getName());
+            try {
+                MimeMessage e = new MimeMessage(session);
+                e.setFrom(new InternetAddress(emailAccount.getEMAIL()));
+                Assert.notNull(emailTo);
+                e.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo));
+                if (emailCc != null) {
+					e.setRecipients(Message.RecipientType.CC, InternetAddress.parse(emailCc));
+				}
+                if (emailBCC != null) {
+					e.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(emailBCC));
+				}
+                e.setSubject(subject);
+                e.setText(messageBody);
+                if(attachmentFiles == null) {
+                    e.setContent(messageBody, "text/html; charset=utf-8");
+                } else {
+                    MimeBodyPart messageBodyPart = new MimeBodyPart();
+                    messageBodyPart.setText(messageBody);
+                    MimeMultipart multipart = new MimeMultipart();
                     multipart.addBodyPart(messageBodyPart);
+                    messageBodyPart = new MimeBodyPart();
+
+					for (File file : attachmentFiles) {
+						FileDataSource source = new FileDataSource(file);
+						messageBodyPart.setDataHandler(new DataHandler(source));
+						messageBodyPart.setFileName(file.getName());
+						multipart.addBodyPart(messageBodyPart);
+					}
+
+                    e.setContent(multipart);
                 }
 
-                e.setContent(multipart);
+                Transport.send(e);
+            } catch (MessagingException var10) {
+                var10.printStackTrace();
             }
 
-            Transport.send(e);
-        } catch (MessagingException var10) {
-            var10.printStackTrace();
-        }
-
-        this.logger.debug("\nSend message : " + id.toString() + "\n" + "Email to : " + this.emailTo + "SUBJ : " + this.subject + "MESSAGE : " + this.messageBody);
+            logger.debug("\nSend message :\n" + "Email to : " + emailTo + "SUBJ : " + subject + "MESSAGE : " + messageBody);
+        };
+        new Thread(runnable).start();
     }
 }
