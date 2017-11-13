@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,4 +129,15 @@ public class PostService {
     }
 
 
+    public List<Post> getLatestPosts(int count) {
+        if (count > 0) {
+            List<Post> posts = postRepository.findTop10AllOrderByTimestampDesc();
+            if (count > posts.size()) {
+                count = posts.size();
+            }
+            return posts.subList(0, count);
+        } else {
+            return Collections.emptyList();
+        }
+    }
 }

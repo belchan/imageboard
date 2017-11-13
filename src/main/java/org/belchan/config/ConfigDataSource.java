@@ -1,7 +1,5 @@
 package org.belchan.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -22,35 +20,6 @@ public class ConfigDataSource {
     @Value("${dataSource.driverClassName}")
     private String driver;
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigDataSource.class);
-//
-//    @Bean
-//    @Profile("openshift")
-//    @Qualifier("dataSource")
-//    public DataSource buildDataSourceOpenShift() {
-//        DataSourceBuilder dsb = DataSourceBuilder.create();
-//        String mysqlHostOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-//        String mysqlPortOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-//        String appNameOpenShift = System.getenv("OPENSHIFT_APP_NAME");
-//        String mysqlUsernameOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
-//        String mysqlPasswordOpenShift = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
-//        String dataSourceMysqlUrlOpenShift = "jdbc:mysql://" + mysqlHostOpenShift + ":" + mysqlPortOpenShift + "/" + appNameOpenShift + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true";
-//        dsb.driverClassName(driver);
-//        dsb.url(dataSourceMysqlUrlOpenShift);
-//        dsb.username(mysqlUsernameOpenShift);
-//        dsb.password(mysqlPasswordOpenShift);
-//        logger.info("=====================BEGIN=========PROD===============");
-//        logger.info("URL");
-//        logger.info(dataSourceMysqlUrlOpenShift);
-//        logger.info("USER");
-//        logger.info(mysqlUsernameOpenShift);
-//        logger.info("PASS");
-//        logger.info(mysqlPasswordOpenShift);
-//        logger.info("=====================END==============================");
-//        return dsb.build();
-//    }
-
-
     @Bean
     @Qualifier("dataSource")
     public DataSource buildDataSourceDev() {
@@ -59,14 +28,6 @@ public class ConfigDataSource {
         dsb.url(url);
         dsb.username(username);
         dsb.password(password);
-        logger.info("=====================BEGIN=========DEV================");
-        logger.info("URL");
-        logger.info(url);
-        logger.info("USER");
-        logger.info(username);
-        logger.info("PASS");
-        logger.info(password);
-        logger.info("=====================END==============================");
         return dsb.build();
     }
 

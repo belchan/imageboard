@@ -1,5 +1,6 @@
 package org.belchan.config;
 
+import org.belchan.dto.TelegramConfig;
 import org.belchan.service.email.EmailAccount;
 import org.belchan.ui.InMemoryMessageRepository;
 import org.belchan.ui.Message;
@@ -24,8 +25,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static org.belchan.config.SecretData.emailNRpass;
-
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {
@@ -48,6 +47,10 @@ public class Config implements TransactionManagementConfigurer {
     private String emailServer;
     @Value("${email.port}")
     private String emailPort;
+    @Value("${telegram.bot.name}")
+    private String telegramBotName;
+    @Value("${telegram.bot.pass}")
+    private String telegramBotPass;
 
     @Autowired
     DataSource dataSource;
@@ -78,8 +81,7 @@ public class Config implements TransactionManagementConfigurer {
         EmailAccount emailAccount = new EmailAccount();
         emailAccount.setEMAIL(this.emailLogin);
         emailAccount.setLOGIN(this.emailLogin);
-//        emailAccount.setPASSWORD(this.emailPassword);
-        emailAccount.setPASSWORD(emailNRpass);
+        emailAccount.setPASSWORD(this.emailPassword);
         emailAccount.setSERVER(this.emailServer);
         emailAccount.setSmtpPort(this.emailPort);
         return emailAccount;
@@ -109,7 +111,7 @@ public class Config implements TransactionManagementConfigurer {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("org.belchan");
+        factory.setPackagesToScan(PACKAGES_TO_SCAN);
         factory.setDataSource(dataSource);
         factory.afterPropertiesSet();
 
@@ -129,4 +131,11 @@ public class Config implements TransactionManagementConfigurer {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
+    @Bean
+    public TelegramConfig telegramConfig() {
+        TelegramConfig telegramConfig = new TelegramConfig();
+        telegramConfig.setBotName(telegramBotName);
+        telegramConfig.setBotPass(telegramBotPass);
+        return telegramConfig;
+    }
 }

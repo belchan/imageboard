@@ -17,9 +17,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Calendar;
 
-/**
- * @author Rob Winch
- */
 public class Message {
 
 	private Long id;

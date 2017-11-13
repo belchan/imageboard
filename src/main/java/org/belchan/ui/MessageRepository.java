@@ -13,9 +13,6 @@
 
 package org.belchan.ui;
 
-/**
- * @author Rob Winch
- */
 public interface MessageRepository {
 
 	Iterable<Message> findAll();

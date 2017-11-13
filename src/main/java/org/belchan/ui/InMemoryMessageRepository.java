@@ -20,9 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * @author Dave Syer
- */
 public class InMemoryMessageRepository implements MessageRepository {
 
 	private static AtomicLong counter = new AtomicLong();
