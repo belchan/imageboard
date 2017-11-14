@@ -32,13 +32,13 @@ public class BoardService {
         return this.boardRepository.findOne(id);
     }
 
-    public Board getBoard(String boardName) {
+    private Board getBoard(String boardName) {
         return boardRepository.findByNameIgnoreCase(boardName);
     }
 
     public List<Post> getPagePosts(String boardName, int page) {
         Board b = boardRepository.findByNameIgnoreCase(boardName);
-        List<Post> posts = postRepository.findTop10ByPostPK_BoardidAndParentidOrderByBumpedDesc(b.getId(), 0);
+        List<Post> posts = postRepository.findTop10ByPostPK_BoardidAndParentidAndIsDeletedOrderByBumpedDesc(b.getId(), 0, false);
         Hibernate.initialize(posts);
         return posts;
     }

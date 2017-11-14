@@ -14,7 +14,7 @@ public interface PostRepository  extends JpaRepository<Post, Integer> {
 
     List<Post> findByDeletedTimestampOrderByTimestampDesc(Long deletedTimestamp);
 
-    List<Post> findTop10ByPostPK_BoardidAndParentidOrderByBumpedDesc(Integer postPK_boardid, int parentid);
+    List<Post> findTop10ByPostPK_BoardidAndParentidAndIsDeletedOrderByBumpedDesc(Integer postPK_boardid, int parentid, Boolean isDeleted);
 
     List<Post> findByPostPK_BoardidAndParentid(Integer postPK_boardid, int parentid);
 

@@ -65,7 +65,7 @@ public class PostService {
         post.setImageW((short) 0);
         post.setIp(ip);
         post.setIpmd5(md5Custom(ip));
-        post.setIsDeleted((byte) 0);
+        post.setIsDeleted(Boolean.FALSE);
         post.setLocked((byte) 0);
         post.setMessage(text);
         post.setName(name);
@@ -84,8 +84,8 @@ public class PostService {
         return postRepository.saveAndFlush(post);
     }
 
-    public String md5Custom(String st) {
-        MessageDigest messageDigest = null;
+    private String md5Custom(String st) {
+        MessageDigest messageDigest;
         byte[] digest = new byte[0];
 
         try {
@@ -100,13 +100,13 @@ public class PostService {
         }
 
         BigInteger bigInt = new BigInteger(1, digest);
-        String md5Hex = bigInt.toString(16);
+        StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
 
         while( md5Hex.length() < 32 ){
-            md5Hex = "0" + md5Hex;
+            md5Hex.insert(0, "0");
         }
 
-        return md5Hex;
+        return md5Hex.toString();
     }
 
     private static Map<Long, LocalDateTime> timeCheck = new HashMap<>();

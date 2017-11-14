@@ -58,7 +58,7 @@ public class Post implements Serializable {
 	private String ipmd5;
 
 	@Column(name="IS_DELETED")
-	private byte isDeleted;
+	private Boolean isDeleted;
 
 	private byte locked;
 
